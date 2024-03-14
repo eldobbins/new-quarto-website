@@ -1,2 +1,0 @@
-# new-quarto-website
-junk
