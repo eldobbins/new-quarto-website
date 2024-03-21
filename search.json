@@ -40,6 +40,16 @@
     ]
   },
   {
+    "objectID": "index.html#inline-code",
+    "href": "index.html#inline-code",
+    "title": "New Quarto Website",
+    "section": "Inline code",
+    "text": "Inline code\n\nprint(\"Hello World!  This was printed with R\")\n\n[1] \"Hello World!  This was printed with R\"",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
     "objectID": "slides/presentation_demo.html#introductions",
     "href": "slides/presentation_demo.html#introductions",
     "title": "Demo Presentation",
