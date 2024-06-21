@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2 
+        uses: actions/checkout@v4 
         
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
@@ -19,20 +19,29 @@ jobs:
           # uncomment below and fill to pin a version
           # version: 0.9.600
       
-      # add software dependencies here
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
-      
-      - name: Install packages
-        uses: r-lib/actions/setup-r-dependencies@v2
+
+      - name: Install system dependencies
+        run: sudo apt-get install -y libcurl4-openssl-dev
+
+      - name: Cache Renv packages
+        uses: actions/cache@v2
         with:
-          packages: |
-            any::knitr
-            any::rmarkdown
+          path: ~/R/Library
+          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-renv-
+
+      - name: Restore R package dependencies with renv
+        run: |
+          Rscript -e "install.packages('renv')"
+          Rscript -e "renv::restore()"
       
       - name: Publish to GitHub Pages (and render)
         uses: quarto-dev/quarto-actions/publish@v2
         with:
           target: gh-pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # this secret is always available for github actions
+
+      - name: Render PDF
+        run: quarto render index.qmd --to pdf --output-dir .
